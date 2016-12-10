@@ -1,12 +1,51 @@
 #owl-demo .item{
+  width:234px;
   height:336px;
-  background: #ffffff;
-  padding: 5px;
+  background: #dedede;
   display: block;
   margin: 5px;
-  color: #FFF;
+  color:  #FFF;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
   text-align: center;
+  position:relative;
+}
+
+#owl-demo .owl-item:hover img{
+  -webkit-filter: brightness(80%);
+   filter: brightness(80%);
+ }
+
+#mainHeader{
+  padding-bottom:200px;
+  padding-left:60px;
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url(../img/popcorn.jpg);
+  background-size:100%;
+  margin-bottom:80px;
+  color:white;
+
+}
+
+#mainHeader h1{
+  text-align:left;
+}
+
+#mainHeader p{
+  margin-top: 200px;
+  text-align:center;
+  font-size: 5em;
+}
+
+.bet h2{
+  text-align:center;
+  font-size:2.5em;
+  color:#bdbdbd;
+  display: block;
+  margin:1.5em;
+}
+
+
+body#bodyStyle{
+  background-color:#424242;
 }

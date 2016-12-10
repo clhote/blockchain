@@ -2,6 +2,7 @@ var accounts;
 var account;
 
 
+
 function setStatus(message) {
   var status = document.getElementById("status");
   //status.innerHTML = message;
@@ -42,12 +43,11 @@ var now = new Date();
 var nowFormat = now.toISOString().slice(0,10).replace(/-/,"-");
 var next = now.setDate(now.getDate()+7);
 var nextFormat = now.toISOString().slice(0,10).replace(/-/,"-");
-alert(nowFormat);
-alert(nextFormat);
-
+var nextnext = now.setDate(now.getDate()+14);
+var nextnextFormat = now.toISOString().slice(0,10).replace(/-/,"-");
 
   $("#owl-demo").owlCarousel({
-    jsonPath : 'https://api.themoviedb.org/3/discover/movie?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte='+nowFormat+'&primary_release_date.lte='+nextFormat+'";',
+    jsonPath : 'https://api.themoviedb.org/3/discover/movie?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte='+nextFormat+'&primary_release_date.lte='+nextnextFormat+'";',
     jsonSuccess : customDataSuccess
   });
 
@@ -61,12 +61,12 @@ alert(nextFormat);
  
        content += "<img class='item' src="+img+">"
         }
-
     }
     $("#owl-demo").append(content);
 }
-
 })
+
+
 
 
 

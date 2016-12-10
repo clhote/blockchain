@@ -20,26 +20,26 @@
 </head>
 
 
-<body>
-    
-      <div id="demo">
-        <div class="container">
-          <div class="row">
-            <div class="span12">
-
-              <div id="owl-demo" class="owl-carousel">
-              </div>
-            </div>
-          </div>
-        </div>
+<body id="bodyStyle">
+  <header id='mainHeader'>
+    <h1>BOB - Box Office Bet</h1>
+    <p>Choisissez votre film. Pariez. Gagnez.</p>
+  </header>
+  <main>
+    <section id="toBet" class="bet"> 
+    <h2>Lancer un pari</h2>
+      <div class="container">
+        <div id="owl-demo" class="owl-carousel"></div>
       </div>
+    </section>
+    <section id="betInProgress" class="bet">
 
+    </section>
+    <section id="betFinished" class="bet">
+    </section>
     <script src="./assets/js/jquery-1.9.1.min.js"></script>
     <script src="./owl-carousel/owl.carousel.min.js"></script>
-
-  <script src="./app.js"></script>
-
-
+    <script src="./app.js"></script>
 
   </body>
 </html>
