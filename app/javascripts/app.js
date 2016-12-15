@@ -49,7 +49,7 @@ function makeBet(imdb_id, amount, bet){
   var book = meta.createBookmaker(id, amount, bet, {from:account, gas:3000000}).then(function() {
     setStatus("Ok ça marche");
   });
-
+  location.reload();
   //new(imdb_id, amount, bet, {from:account, gas:3000000}).then(function() {
 //setStatus("Transaction complete!");
   //});
