@@ -1,11 +1,11 @@
 var accounts;
 var account;
 var imdb_id;
-
+var toPay;
 
 function setStatus(message) {
   var status = document.getElementById("status");
-  status.innerHTML = message;
+  //status.innerHTML = message;
 };
 
 function refreshBalance() {
@@ -41,15 +41,29 @@ function setId(id){
   imdb_id=id;
 };
 
+function setParameters(id){
+  imdb_id=id;
+  console.log("iddd= "+imdb_id);
+  var meta = BookmakerFactory.deployed();
+  var idInt = parseInt(imdb_id.substr(2));
+  console.log("itttt= "+idInt);
+  meta.getValueBet.call(idInt, {from:account}).then(function(result) {
+    toPay = result.c[0];
+    console.log(toPay);
+    var myInput = document.getElementById("myBetAmount");
+    myInput.innerHTML = "Coût du pari : "+toPay+ " wei";
+  })
+};
+
 
 function makeBet(imdb_id, amount, bet){
 
     var meta = BookmakerFactory.deployed();
     var id = parseInt(imdb_id.substr(2));
   var book = meta.createBookmaker(id, amount, bet, {from:account, gas:3000000}).then(function() {
-    setStatus("Ok ça marche");
+    reloadPage();
   });
-  location.reload();
+ // location.reload();
   //new(imdb_id, amount, bet, {from:account, gas:3000000}).then(function() {
 //setStatus("Transaction complete!");
   //});
@@ -60,6 +74,11 @@ $('#done').on('click', function(){
   var bet=$("div.modal-body input:nth-child(2)").val();
   makeBet(imdb_id, amount, bet);
 });
+
+function reloadPage() {
+    window.location.reload(true);
+}
+
 
 
 function betOnMovie(group, id){
@@ -175,7 +194,7 @@ meta.getIMDB.call({from:account}).then(function(result) {
     );
     var imgInProgress = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
     console.log(imgInProgress);
-    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalInProgress" onclick="setId(\''+dataImg.imdb_id+'\');"></span>'
+    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalInProgress" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
 }
 $("#inProgress").append(content2);
 });

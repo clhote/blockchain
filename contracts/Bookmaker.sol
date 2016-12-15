@@ -126,6 +126,10 @@ contract Bookmaker  {
         return owner;
         
     }
+
+    function getValue() returns (uint) {
+        return valueBet;
+    }
     
     function getAddress() returns (address) {
         return this;

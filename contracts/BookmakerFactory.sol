@@ -30,6 +30,10 @@ function getInitialBet(uint _imdb) returns (uint){
     return bets[_imdb].getboxOfficeBet();
 }
 
+function getValueBet(uint _imdb) returns (uint) {
+    return bets[_imdb].getValue();
+}
+
 
 function closeBet(uint _group, uint _imdb) {
     
