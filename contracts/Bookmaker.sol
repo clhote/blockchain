@@ -30,7 +30,7 @@ contract Bookmaker  {
     mapping (uint => uint) group;
    // event newOraclizeQuery(string description);
 
-    function Bookmaker(uint _imdb, uint _valueBet, uint _betboxoffice, address _owner) payable {
+    function Bookmaker(uint _imdb, uint _valueBet, uint _betboxoffice, address _owner) {
         imdb = _imdb;
         valueBet = _valueBet;
         betBoxOffice = _betboxoffice;
@@ -122,7 +122,7 @@ contract Bookmaker  {
         
     }
     
-        function getOwner() returns (address) {
+    function getOwner() returns (address) {
         return owner;
         
     }

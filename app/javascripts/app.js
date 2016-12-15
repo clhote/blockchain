@@ -63,17 +63,28 @@ function makeBet(imdb_id, amount, bet){
   var book = meta.createBookmaker(id, amount, bet, {from:account, gas:3000000}).then(function() {
     reloadPage();
   });
- // location.reload();
-  //new(imdb_id, amount, bet, {from:account, gas:3000000}).then(function() {
-//setStatus("Transaction complete!");
-  //});
+
  }
+
+ /*function takeMoney(imdb_id, amount, bet){
+
+    var meta = BookmakerFactory.deployed();
+    var id = parseInt(imdb_id.substr(2));
+    var book = meta.withdrawBet(id, {from:account, gas:3000000}).then(function() {
+    reloadPage();
+  });
+
+ }*/
 
 $('#done').on('click', function(){
   var amount=$("div.modal-body input:first").val();
   var bet=$("div.modal-body input:nth-child(2)").val();
   makeBet(imdb_id, amount, bet);
 });
+
+/*$('#withdrawMoney').on('click', function(){
+  takeMoney(imdb_id);
+});*/
 
 function reloadPage() {
     window.location.reload(true);
@@ -161,7 +172,8 @@ window.onload = function() {
 
 
   var meta = BookmakerFactory.deployed();
-meta.getIMDB.call({from:account}).then(function(result) {
+meta.getIMDB.call({from:"0x55e071201bb29f64ace87f5e44220a67fe4b1607"}).then(function(result) {
+  console.log(result);
     var content2="";
   for(var i=0;i<result.length;i++){
     var dd = String(result[i].c[0]);
