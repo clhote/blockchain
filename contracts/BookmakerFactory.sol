@@ -16,7 +16,7 @@ contract BookmakerFactory {
 	uint[] imdb_ids_closed; 
 
 	function createBookmaker(uint _imdb, uint _valueBet, uint _betboxoffice) payable {
-	address add = 0x55e071201bb29f64ace87f5e44220a67fe4b1607;
+	address add = msg.sender;
 	bets[_imdb]= new Bookmaker(_imdb, _valueBet, _betboxoffice, add);
 	imdb_ids.push(_imdb);
 	}
@@ -53,7 +53,7 @@ contract BookmakerFactory {
         
     }
 
-	function buyBookmakerBet(uint _group, uint _imdb) payable {
+	function buyBookmakerBet(uint _group, uint _imdb){
 	        bets[_imdb].buyBet(_group, msg.sender);
 	}
 

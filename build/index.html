@@ -43,7 +43,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Combien ce film va t'il faire au box office bqrreqgreIUHRUH?</h4>
+          <h4 class="modal-title">Combien ce film va t'il faire au box office</h4>
         </div>
         <div class="modal-body">
           <form id="betform">
@@ -66,7 +66,7 @@
     <section class="bet">
       <h2>Mes paris en cours</h2>
       <div class="container">
-        <div id="inProgress"></div>
+        <div id="2"></div>
       </div>
   <!-- Modal -->
   <div class="modal fade" id="modalInProgress" role="dialog">
@@ -95,12 +95,40 @@
 
     </section>
 
-
-    
-     <section class="finish">
-      <h2>Mes paris terminés</h2>
+<section class="toFinish">
+      <h2>Mes paris à terminer</h2>
       <div class="container">
-        <div id="inProgress"></div>
+        <div id="3"></div>
+      </div>
+  <!-- Modal -->
+  <div class="modal fade" id="modal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Clôturer un pari</h4>
+
+        </div>
+        <div class="modal-body">
+          <input type="number" name="value" id="resultBet" placeholder="Box office result ($) : ">
+          <button type="button" id="closeBet" class="btn btn-default" data-dismiss="modal">Clôturer</button>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+    </section>
+
+     <section class="finish">
+      <h2>Les paris terminés</h2>
+      <div class="container">
+        <div id="4"></div>
       </div>
   <!-- Modal -->
   <div class="modal fade" id="modal" role="dialog">
@@ -124,9 +152,6 @@
     </div>
   </div>
 
-    </section>
-
-    <section id="betFinished" class="bet">
     </section>
     <script src="./owl-carousel/owl.carousel.min.js"></script>
     <script src="./app.js"></script>
@@ -159,4 +184,3 @@
 </body>
 </html>
 -->
-

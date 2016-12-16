@@ -66,15 +66,23 @@ function makeBet(imdb_id, amount, bet){
 
  }
 
- /*function takeMoney(imdb_id, amount, bet){
+ function takeMoney(imdb_id){
 
     var meta = BookmakerFactory.deployed();
     var id = parseInt(imdb_id.substr(2));
     var book = meta.withdrawBet(id, {from:account, gas:3000000}).then(function() {
     reloadPage();
   });
+ }
 
- }*/
+  function finishBet(group, id){
+    var meta = BookmakerFactory.deployed();
+    var book = meta.closeBet(group, id, {from:account, gas:3000000}).then(function(){
+      console.log("Bet closed");
+    });
+  }
+
+
 
 $('#done').on('click', function(){
   var amount=$("div.modal-body input:first").val();
@@ -82,9 +90,34 @@ $('#done').on('click', function(){
   makeBet(imdb_id, amount, bet);
 });
 
-/*$('#withdrawMoney').on('click', function(){
+$('#withdrawMoney').on('click', function(){
   takeMoney(imdb_id);
-});*/
+});
+
+$('#closeBet').on('click', function(){
+  var resultBoxOffice=$("#resultBet").val();
+  var meta = BookmakerFactory.deployed();
+  var id = parseInt(imdb_id.substr(2));
+  console.log(id);
+  var group;
+  var betAmount;
+  var book = meta.getInitialBet.call(id,{from:account}).then(function(result) {
+    var betBoxOffice = result.c[0];
+    console.log(result.c[0]);
+    console.log(resultBoxOffice);
+    if (resultBoxOffice < betBoxOffice/2) group=1;
+    if (resultBoxOffice > betBoxOffice/2 && resultBoxOffice < 95*betBoxOffice/100) group = 2;
+    if (resultBoxOffice > 95*betBoxOffice/100 && resultBoxOffice < 105*betBoxOffice/100) group = 3;
+    if (resultBoxOffice > 105*betBoxOffice/100 && resultBoxOffice < 150*betBoxOffice/100) group = 4;
+    if (resultBoxOffice > 150*betBoxOffice/100) group = 5;
+    console.log(group);
+    meta.getValueBet.call(id, {from:account}).then(function(_betAmount) {
+      betAmount = _betAmount.c[0];
+      console.log(betAmount);
+    });
+     finishBet(group, id);
+  });
+});
 
 function reloadPage() {
     window.location.reload(true);
@@ -92,13 +125,14 @@ function reloadPage() {
 
 
 
-function betOnMovie(group, id){
+function betOnMovie(group, id, betAmount){
     var meta = BookmakerFactory.deployed();
     var id = parseInt(imdb_id.substr(2));
- // var book = meta.buyBookmakerBet(group, id, {from:account, gas:3000000}).then(function() {
-   // setStatus("Ok ça marche");
-  //});
-console.log("group=" + group + "id="+id);
+    console.log(id);
+ var book = meta.buyBookmakerBet(group, id, {from:account, gas:4000000, value:2}).then(function() {
+   console.log("Ca maaaaarche");
+   console.log("group=" + group + "id="+id);
+  });
   //new(imdb_id, amount, bet, {from:account, gas:3000000}).then(function() {
 //setStatus("Transaction complete!");
   //});
@@ -111,6 +145,7 @@ $('#doneInProgress').on('click', function(){
   var id = parseInt(imdb_id.substr(2));
   console.log(id);
   var group;
+  var betAmount;
   var book = meta.getInitialBet.call(id,{from:account}).then(function(result) {
     var betBoxOffice = result.c[0];
     console.log(result.c[0]);
@@ -121,9 +156,13 @@ $('#doneInProgress').on('click', function(){
     if (resultBoxOffice > 105*betBoxOffice/100 && resultBoxOffice < 150*betBoxOffice/100) group = 4;
     if (resultBoxOffice > 150*betBoxOffice/100) group = 5;
     console.log(group);
-    betOnMovie(group, imdb_id);
-  });
-  
+  }).then(function(){
+  console.log("betAmount="+betAmount);
+  console.log("group="+group);
+  console.log("imdb="+imdb_id);
+ 
+       betOnMovie(group, imdb_id, 2);
+    });
 });
 
 
@@ -149,7 +188,7 @@ var nextnextFormat = now.toISOString().slice(0,10).replace(/-/,"-");
         if (data["results"][i].poster_path){
        var img = "http://image.tmdb.org/t/p/w500/" + data["results"][i].poster_path;
        var alt = data["results"][i].title;
-        
+        
       var urlImdb = 'https://api.themoviedb.org/3/movie/'+data["results"][i].id+'?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US';
       var dataImdb = $.parseJSON(
         $.ajax({
@@ -168,13 +207,12 @@ var nextnextFormat = now.toISOString().slice(0,10).replace(/-/,"-");
 
 });
 
-window.onload = function() {
+function toClose() {
+  meta3=BookmakerFactory.deployed();
 
-
-  var meta = BookmakerFactory.deployed();
-meta.getIMDB.call({from:"0x55e071201bb29f64ace87f5e44220a67fe4b1607"}).then(function(result) {
+  meta3.getIMDB.call({from:account}).then(function(result) {
   console.log(result);
-    var content2="";
+    var content3="";
   for(var i=0;i<result.length;i++){
     var dd = String(result[i].c[0]);
     console.log(dd);
@@ -184,6 +222,57 @@ meta.getIMDB.call({from:"0x55e071201bb29f64ace87f5e44220a67fe4b1607"}).then(func
       idImdb=zero.concat(dd);
     }
     else idImdb=dd;
+
+    meta3.getOwnerBet.call(idImdb,{from:"0x9374d46e98fc3d9ad1174a8a09f8365b345bd244"}).then(function(owners) {
+      console.log("Address imdb: "+ owners);
+    });
+
+    var getTMDBid = 'https://api.themoviedb.org/3/find/tt'+idImdb+'?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US&external_source=imdb_id';
+    var dataTmdb = $.parseJSON(
+      $.ajax({
+        url: getTMDBid, 
+        async: false,
+        dataType: 'json'
+      }).responseText
+    );
+    var TMDBid=dataTmdb["movie_results"][0].id;
+    var urlGetImg = 'https://api.themoviedb.org/3/movie/'+TMDBid+'?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US';
+ 
+    var dataImg = $.parseJSON(
+        $.ajax({
+            url: urlGetImg, 
+            async: false,
+            dataType: 'json'
+        }).responseText
+    );
+    var imgInProgress = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
+    console.log(imgInProgress);
+    content3+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalInProgress" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
+}
+$("#3").append(content3);
+});
+  
+}
+
+function toLaunch(){
+  var meta = BookmakerFactory.deployed();
+
+  meta.getNoIMDB.call({from:account}).then(function(result) {
+  console.log(result);
+    var content2="";
+  for(var i=0;i<result.length;i++){
+    var dd = String(result[i].c[0]);
+    console.log(dd);
+    var idImdb;
+
+    if (dd.length<7) {
+      var zero = "0";
+      idImdb=zero.concat(dd);
+    }
+    else idImdb=dd;
+    meta.getOwnerBet.call(idImdb,{from:"0x9374d46e98fc3d9ad1174a8a09f8365b345bd244"}).then(function(owners) {
+      console.log("Address : "+ owners);
+    });
 
 
     var getTMDBid = 'https://api.themoviedb.org/3/find/tt'+idImdb+'?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US&external_source=imdb_id';
@@ -208,8 +297,12 @@ meta.getIMDB.call({from:"0x55e071201bb29f64ace87f5e44220a67fe4b1607"}).then(func
     console.log(imgInProgress);
     content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalInProgress" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
 }
-$("#inProgress").append(content2);
+$("#2").append(content2);
 });
+}
+
+
+window.onload = function() {
 
 
   web3.eth.getAccounts(function(err, accs) {
@@ -225,10 +318,8 @@ $("#inProgress").append(content2);
 
     accounts = accs;
     account = accounts[0];
-
+    //toClose();
+    toLaunch();
     //refreshBalance();
   });
-
-    //console.log(BookmakerFactory.deployed());
-
 }

@@ -53,25 +53,23 @@ contract Bookmaker  {
 
     }
     
-    function buyBet(uint _group, address _owner) payable onlyNotOwner(_owner)  {
+    function buyBet(uint _group, address _owner) onlyNotOwner(_owner)  {
         if(msg.value < valueBet) {
-            if(!msg.sender.send(msg.value)) {
+            if(!_owner.send(msg.value)) {
                 throw;
             }
             return;
         }
         
         group[_group]++;
-        bets[msg.sender] = _group;  
+        bets[_owner] = _group;  
         
         // A TEJ
         nbrVoters++;
         
-        if (!msg.sender.send(msg.value - valueBet)) {
+        if (!_owner.send(msg.value - valueBet)) {
             throw;
-        }
-        
-        
+        } 
     }
     
     // Fermeture en dur
