@@ -53,7 +53,7 @@ contract BookmakerFactory {
         
     }
 
-	function buyBookmakerBet(uint _group, uint _imdb){
+	function buyBookmakerBet(uint _group, uint _imdb) payable {
 	        bets[_imdb].buyBet(_group, msg.sender);
 	}
 

@@ -295,7 +295,7 @@ function toLaunch(){
     );
     var imgInProgress = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
     console.log(imgInProgress);
-    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalInProgress" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
+    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalFinish" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
 }
 $("#2").append(content2);
 });
@@ -317,8 +317,8 @@ window.onload = function() {
     }
 
     accounts = accs;
-    account = accounts[0];
-    //toClose();
+    account = accounts[1];
+    toClose();
     toLaunch();
     //refreshBalance();
   });

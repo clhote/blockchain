@@ -53,7 +53,7 @@ contract Bookmaker  {
 
     }
     
-    function buyBet(uint _group, address _owner) onlyNotOwner(_owner)  {
+    function buyBet(uint _group, address _owner) payable onlyNotOwner(_owner)  {
         if(msg.value < valueBet) {
             if(!_owner.send(msg.value)) {
                 throw;
