@@ -96,10 +96,11 @@ contract BookmakerFactory {
 	    return resultNotOwner;
 	}
 
-	function closeBet(uint _group, uint _imdb) {
-	    bets[_imdb].closeBet(_group, msg.sender);
+	function closeBetFact(uint _group, uint _imdb) {
+	    bets[_imdb].closeBetBookmaker(_group, msg.sender);
 	    bets_closed[_imdb] = bets[_imdb];
 	    delete(bets[_imdb]);
+
 	    
 	    for (uint i = 0; i < imdb_ids.length;i++)
 	    {

@@ -73,20 +73,21 @@ contract Bookmaker  {
     }
     
     // Fermeture en dur
-    function closeBet(uint _group, address _owner) onlyOwner(_owner) {
+    function closeBetBookmaker(uint _group, address _owner) onlyOwner(_owner) {
         
         closed = true;
         winnerGroup = _group;
         
-        uint winOwner;
+        //uint winOwner;
         
         
-        winOwner = this.balance/100;
-        reward = (this.balance - winOwner)/(this.balance/valueBet);
+        //winOwner = this.balance/100;
+       // reward = (this.balance - winOwner)/(this.balance/valueBet);
 
-        if (!owner.send(winOwner)) {
-            throw;
-        }
+       reward = valueBet;
+       // if (!owner.send(winOwner)) {
+        //    throw;
+        //}
     }
     
     function withdraw(address _owner) onlyClosed() onlyNotOwner(_owner) {

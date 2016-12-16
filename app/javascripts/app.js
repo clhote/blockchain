@@ -77,7 +77,7 @@ function makeBet(imdb_id, amount, bet){
 
   function finishBet(group, id){
     var meta = BookmakerFactory.deployed();
-    var book = meta.closeBet(group, id, {from:account, gas:3000000}).then(function(){
+    var book = meta.closeBetFact(group, id, {from:account, gas:3000000}).then(function(){
       console.log("Bet closed");
     });
   }
@@ -247,7 +247,7 @@ function toClose() {
     );
     var imgInProgress = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
     console.log(imgInProgress);
-    content3+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalInProgress" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
+    content3+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalFinish" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
 }
 $("#3").append(content3);
 });
@@ -265,6 +265,7 @@ function toLaunch(){
     console.log(dd);
     var idImdb;
 
+    if(dd.length<2) return;
     if (dd.length<7) {
       var zero = "0";
       idImdb=zero.concat(dd);
@@ -295,9 +296,59 @@ function toLaunch(){
     );
     var imgInProgress = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
     console.log(imgInProgress);
-    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalFinish" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
+    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#modalInProgress" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
 }
 $("#2").append(content2);
+});
+}
+
+
+
+function toWithdraw(){
+  var meta = BookmakerFactory.deployed();
+
+  meta.getClosedBetNotOwner.call({from:account}).then(function(result) {
+  console.log(result);
+    var content2="";
+  for(var i=0;i<result.length;i++){
+    var dd = String(result[i].c[0]);
+    console.log(dd);
+    var idImdb;
+
+    if(dd.length<2) return;
+    if (dd.length<7) {
+      var zero = "0";
+      idImdb=zero.concat(dd);
+    }
+    else idImdb=dd;
+    meta.getOwnerBet.call(idImdb,{from:account}).then(function(owners) {
+      console.log("Address : "+ owners);
+    });
+
+
+    var getTMDBid = 'https://api.themoviedb.org/3/find/tt'+idImdb+'?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US&external_source=imdb_id';
+    var dataTmdb = $.parseJSON(
+      $.ajax({
+        url: getTMDBid, 
+        async: false,
+        dataType: 'json'
+      }).responseText
+    );
+    var TMDBid=dataTmdb["movie_results"][0].id;
+    var urlGetImg = 'https://api.themoviedb.org/3/movie/'+TMDBid+'?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US';
+ 
+    var dataImg = $.parseJSON(
+        $.ajax({
+            url: urlGetImg, 
+            async: false,
+            dataType: 'json'
+        }).responseText
+    );
+    var imgInProgress = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
+    console.log(imgInProgress);
+    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#withdrawMoney" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
+}
+$("#4").append(content2);
 });
 }
 
@@ -317,9 +368,10 @@ window.onload = function() {
     }
 
     accounts = accs;
-    account = accounts[1];
+    account = accounts[3];
     toClose();
     toLaunch();
+    toWithdraw();
     //refreshBalance();
   });
 }
