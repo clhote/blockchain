@@ -366,7 +366,7 @@ window.onload = function() {
     }
 
     accounts = accs;
-    account = accounts[3];
+    account = accounts[2];
     toClose();
     toLaunch();
     toWithdraw();
