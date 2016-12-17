@@ -57,8 +57,8 @@ contract BookmakerFactory {
 	        bets[_imdb].buyBet(_group, msg.sender);
 	}
 
-	function withdrawBet(uint _imdb) {
-	    bets[_imdb].withdraw(msg.sender);
+	function withdrawBetFacto(uint _imdb){
+	    //bets_closed[_imdb].withdraw(msg.sender);
 	}
 
 	function getInitialBet(uint _imdb) returns (uint) {
@@ -101,11 +101,11 @@ contract BookmakerFactory {
 	    //delete(bets[_imdb]);
 	    imdb_ids_closed.push(_imdb);
 	    
-	    for (uint i = 0; i < imdb_ids.length;i++)
+	   /* for (uint i = 0; i < imdb_ids.length;i++)
 	    {
 	        if (imdb_ids[i] == _imdb) {
 	            delete(imdb_ids[i]);
 	        }
-	    }    
+	    }*/    
 	} 
 }

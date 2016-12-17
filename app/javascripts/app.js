@@ -70,7 +70,7 @@ function makeBet(imdb_id, amount, bet){
 
     var meta = BookmakerFactory.deployed();
     var id = parseInt(imdb_id.substr(2));
-    var book = meta.withdrawBet(id, {from:account, gas:4000000}).then(function() {
+    var book = meta.withdrawBetFacto(id, {from:account, gas:4000000}).then(function() {
     console.log("omg, withdraw fonctionne");
     reloadPage();
   });
@@ -130,7 +130,7 @@ function betOnMovie(group, id, betAmount){
     var meta = BookmakerFactory.deployed();
     var id = parseInt(imdb_id.substr(2));
     console.log(id);
- var book = meta.buyBookmakerBet(group, id, {from:account, gas:4000000, value:2}).then(function() {
+ var book = meta.buyBookmakerBet(group, id, {from:account, gas:4000000, value:betAmount}).then(function() {
    console.log("Ca maaaaarche");
    console.log("group=" + group + "id="+id);
   });
@@ -366,7 +366,7 @@ window.onload = function() {
     }
 
     accounts = accs;
-    account = accounts[1];
+    account = accounts[3];
     toClose();
     toLaunch();
     toWithdraw();

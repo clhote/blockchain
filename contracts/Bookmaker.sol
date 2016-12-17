@@ -90,15 +90,15 @@ contract Bookmaker  {
         //}
     }
     
-    function withdraw(address _owner) onlyClosed() onlyNotOwner(_owner) {
+    function withdraw(address _owner) onlyClosed() onlyNotOwner(_owner){
         if(bets[_owner] == winnerGroup)
-        {
+       {
+
             if(!_owner.send(reward)) {
                 throw;
             }
         }
         else throw;
-        
     }
       
     modifier onlyNotOwner(address _owner) {
