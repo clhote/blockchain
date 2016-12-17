@@ -91,9 +91,9 @@ contract Bookmaker  {
     }
     
     function withdraw(address _owner) onlyClosed() onlyNotOwner(_owner) {
-        if(bets[msg.sender] == winnerGroup)
+        if(bets[_owner] == winnerGroup)
         {
-            if(!msg.sender.send(reward)) {
+            if(!_owner.send(reward)) {
                 throw;
             }
         }

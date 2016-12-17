@@ -70,14 +70,15 @@ function makeBet(imdb_id, amount, bet){
 
     var meta = BookmakerFactory.deployed();
     var id = parseInt(imdb_id.substr(2));
-    var book = meta.withdrawBet(id, {from:account, gas:3000000}).then(function() {
+    var book = meta.withdrawBet(id, {from:account, gas:4000000}).then(function() {
+    console.log("omg, withdraw fonctionne");
     reloadPage();
   });
  }
 
   function finishBet(group, id){
     var meta = BookmakerFactory.deployed();
-    var book = meta.closeBetFact(group, id, {from:account, gas:3000000}).then(function(){
+    var book = meta.closeBetFacto(group, id, {from:account, gas:3000000}).then(function(){
       console.log("Bet closed");
     });
   }
@@ -306,10 +307,10 @@ $("#2").append(content2);
 
 function toWithdraw(){
   var meta = BookmakerFactory.deployed();
-
+console.log("withdrawing")
   meta.getClosedBetNotOwner.call({from:account}).then(function(result) {
   console.log(result);
-    var content2="";
+    var content4="";
   for(var i=0;i<result.length;i++){
     var dd = String(result[i].c[0]);
     console.log(dd);
@@ -321,9 +322,6 @@ function toWithdraw(){
       idImdb=zero.concat(dd);
     }
     else idImdb=dd;
-    meta.getOwnerBet.call(idImdb,{from:account}).then(function(owners) {
-      console.log("Address : "+ owners);
-    });
 
 
     var getTMDBid = 'https://api.themoviedb.org/3/find/tt'+idImdb+'?api_key=d2a74b4756416312f7c1a8b1c19ae91f&language=en-US&external_source=imdb_id';
@@ -344,11 +342,11 @@ function toWithdraw(){
             dataType: 'json'
         }).responseText
     );
-    var imgInProgress = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
-    console.log(imgInProgress);
-    content2+='<span><img class="imgInProgress" src='+imgInProgress+' data-toggle="modal" data-target="#withdrawMoney" onclick="setParameters(\''+dataImg.imdb_id+'\');"></span>'
+    var imgClosed = "http://image.tmdb.org/t/p/w500/" + dataImg.poster_path;
+    content4+='<span><img class="imgInProgress" src='+imgClosed+' data-toggle="modal" data-target="#getMoney" onclick="setId(\''+dataImg.imdb_id+'\');"></span>'
 }
-$("#4").append(content2);
+console.log(content4);
+$("#4").append(content4);
 });
 }
 
@@ -368,7 +366,7 @@ window.onload = function() {
     }
 
     accounts = accs;
-    account = accounts[3];
+    account = accounts[1];
     toClose();
     toLaunch();
     toWithdraw();

@@ -58,8 +58,7 @@ contract BookmakerFactory {
 	}
 
 	function withdrawBet(uint _imdb) {
-		address add = 0x5c221bfdf3c1862f877bb076f616c2eddf816604;
-	    bets[_imdb].withdraw(add);
+	    bets[_imdb].withdraw(msg.sender);
 	}
 
 	function getInitialBet(uint _imdb) returns (uint) {
@@ -96,11 +95,11 @@ contract BookmakerFactory {
 	    return resultNotOwner;
 	}
 
-	function closeBetFact(uint _group, uint _imdb) {
+	function closeBetFacto(uint _group, uint _imdb) {
 	    bets[_imdb].closeBetBookmaker(_group, msg.sender);
 	    bets_closed[_imdb] = bets[_imdb];
-	    delete(bets[_imdb]);
-
+	    //delete(bets[_imdb]);
+	    imdb_ids_closed.push(_imdb);
 	    
 	    for (uint i = 0; i < imdb_ids.length;i++)
 	    {
